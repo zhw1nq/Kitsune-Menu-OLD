@@ -22,6 +22,13 @@ namespace Menu
 		public const ulong BUTTON_EXIT = 1UL << 33;  // Custom Scoreboard value
 		public const ulong BUTTON_INPUT = 1UL << 63; // Special input mode
 
+		// Sound constants
+		private const string SOUND_SCROLL = "sounds/ui_sounds/uif/01_default_click_popup.vsnd_c";
+		private const string SOUND_CLICK = "sounds/ui_sounds/uif/01_default_select.vsnd_c";
+		private const string SOUND_DISABLED = "sounds/ui_sounds/uif/01_default_click_popup_close.vsnd_c";
+		private const string SOUND_BACK = "sounds/ui_sounds/uif/01_default_click_popup_close.vsnd_c";
+		private const string SOUND_EXIT = "sounds/ui_sounds/uif/10_chanui_vvip_gift_01.vsnd_c";
+
 		private const string CONFIG_FILE = "menu_config.jsonc";
 		private string _configPath = string.Empty;
 		private static readonly JsonSerializerOptions _jsonOptions = new()
@@ -40,6 +47,13 @@ namespace Menu
 		public string Left { get; set; } = "Moveleft";
 		public string Right { get; set; } = "Moveright";
 		public string Exit { get; set; } = "Scoreboard";
+
+		// Sound paths in config
+		public string ScrollSound { get; set; } = SOUND_SCROLL;
+		public string ClickSound { get; set; } = SOUND_CLICK;
+		public string DisabledSound { get; set; } = SOUND_DISABLED;
+		public string BackSound { get; set; } = SOUND_BACK;
+		public string ExitSound { get; set; } = SOUND_EXIT;
 
 		// Cached button values
 		private ulong _selectButton;
@@ -87,6 +101,13 @@ namespace Menu
 					Left = config.Left;
 					Right = config.Right;
 					Exit = config.Exit;
+
+					// Load sound configurations
+					ScrollSound = config.ScrollSound ?? SOUND_SCROLL;
+					ClickSound = config.ClickSound ?? SOUND_CLICK;
+					DisabledSound = config.DisabledSound ?? SOUND_DISABLED;
+					BackSound = config.BackSound ?? SOUND_BACK;
+					ExitSound = config.ExitSound ?? SOUND_EXIT;
 				}
 			}
 			catch (Exception ex)
@@ -176,7 +197,14 @@ namespace Menu
     ""Right"": ""Moveright"",
 
     // Exit menu button
-    ""Exit"": ""Scoreboard""
+    ""Exit"": ""Scoreboard"",
+
+    // Sound configurations
+    ""ScrollSound"": ""sounds/ui_sounds/uif/01_default_click_popup.vsnd_c"",
+    ""ClickSound"": ""sounds/ui_sounds/uif/01_default_select.vsnd_c"",
+    ""DisabledSound"": ""sounds/ui_sounds/uif/01_default_click_popup_close.vsnd_c"",
+    ""BackSound"": ""sounds/ui_sounds/uif/01_default_click_popup_close.vsnd_c"",
+    ""ExitSound"": ""sounds/ui_sounds/uif/10_chanui_vvip_gift_01.vsnd_c""
 }";
 
 			try
@@ -212,6 +240,13 @@ namespace Menu
 		public MenuButtons GetRightButton() => (MenuButtons)_rightButton;
 		public MenuButtons GetExitButton() => (MenuButtons)_exitButton;
 		public MenuButtons GetInputButton() => (MenuButtons)BUTTON_INPUT;
+
+		// Getter methods for sounds
+		public string GetScrollSound() => ScrollSound;
+		public string GetClickSound() => ClickSound;
+		public string GetDisabledSound() => DisabledSound;
+		public string GetBackSound() => BackSound;
+		public string GetExitSound() => ExitSound;
 
 		public MenuButtons GetButtonValue(MenuButtons button)
 		{

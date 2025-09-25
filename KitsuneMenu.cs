@@ -13,11 +13,6 @@ namespace Menu
 {
     public sealed partial class KitsuneMenu
     {
-        private const string SOUND_SCROLL = "sounds/ui_sounds/uif/01_default_click_popup.vsnd_c";
-        private const string SOUND_CLICK = "sounds/ui_sounds/uif/01_default_select.vsnd_c";
-        private const string SOUND_DISABLED = "sounds/ui_sounds/uif/01_default_click_popup_close.vsnd_c";
-        private const string SOUND_BACK = "sounds/ui_sounds/uif/01_default_click_popup_close.vsnd_c";
-        private const string SOUND_EXIT = "sounds/ui_sounds/uif/10_chanui_vvip_gift_01.vsnd_c";
         private static BasePlugin _plugin = null!;
         private static readonly ConcurrentDictionary<CCSPlayerController, Stack<MenuBase>> Menus = new();
         private static readonly SayEvent OnSay = new("say", OnSayEvent);
@@ -190,9 +185,6 @@ namespace Menu
         {
             if (player?.IsValid == true)
             {
-                // Sử dụng Server.ExecuteCommand để play sound cho CS2
-                // Server.ExecuteCommand($"play {soundPath}");
-                // Hoặc thử cách khác nếu cần:
                 player.ExecuteClientCommand($"play {soundPath}");
             }
         }
@@ -206,11 +198,9 @@ namespace Menu
 
         private static bool HandleMenuButton(MenuButtons buttons, MenuBase menu, MenuItem? selectedItem, CCSPlayerController controller)
         {
-            bool buttonHandled = false;
-
             if (CheckButton(buttons, _config.GetSelectButton()))
             {
-                PlayMenuSound(controller, SOUND_CLICK);
+                PlayMenuSound(controller, _config.GetClickSound());
 
                 if (selectedItem == null) return false;
                 switch (selectedItem.Type)
@@ -239,7 +229,7 @@ namespace Menu
 
             if (CheckButton(buttons, _config.GetUpButton()) || CheckButton(buttons, _config.GetDownButton()))
             {
-                PlayMenuSound(controller, SOUND_SCROLL);
+                PlayMenuSound(controller, _config.GetScrollSound());
 
                 if (!menu.AcceptInput)
                 {
@@ -270,7 +260,7 @@ namespace Menu
 
             if ((CheckButton(buttons, _config.GetLeftButton()) || CheckButton(buttons, _config.GetRightButton())) && selectedItem != null && !menu.AcceptInput)
             {
-                PlayMenuSound(controller, SOUND_SCROLL);
+                PlayMenuSound(controller, _config.GetScrollSound());
                 switch (selectedItem.Type)
                 {
                     case MenuItemType.Choice:
@@ -308,7 +298,7 @@ namespace Menu
 
             if (CheckButton(buttons, _config.GetBackButton()))
             {
-                PlayMenuSound(controller, SOUND_BACK);
+                PlayMenuSound(controller, _config.GetBackSound());
 
                 if (menu.AcceptInput)
                 {
@@ -324,7 +314,7 @@ namespace Menu
 
             if (CheckButton(buttons, _config.GetExitButton()))
             {
-                PlayMenuSound(controller, SOUND_EXIT);
+                PlayMenuSound(controller, _config.GetExitSound());
 
                 menu.Callback?.Invoke(_config.GetExitButton(), menu, null);
 
@@ -342,7 +332,6 @@ namespace Menu
 
             return false;
         }
-
         private static void RaiseDrawMenu(CCSPlayerController controller, MenuBase menu, MenuItem? selectedItem)
         {
             OnDrawMenu?.Invoke(null, new MenuEvent(controller, menu, selectedItem, 0));
