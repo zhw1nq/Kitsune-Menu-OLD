@@ -1,0 +1,18 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.github": true,
+        "**/.vscode": true,
+        "**/.gitattributes": true,
+        "**/3rd_party": true,
+        "**/bin": true,
+        "**/gamedata": true,
+        "**/README.md": true,
+        "**/obj": true,
+        "**/.gitignore": true,
+        "**/Patches": true,
+        ".env": true,
+        "VERSION": true,
+        "LICENSE": true
+    }
+}
