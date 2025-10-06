@@ -260,39 +260,6 @@ namespace Menu
 
             if ((CheckButton(buttons, _config.GetLeftButton()) || CheckButton(buttons, _config.GetRightButton())) && selectedItem != null && !menu.AcceptInput)
             {
-                PlayMenuSound(controller, _config.GetScrollSound());
-                switch (selectedItem.Type)
-                {
-                    case MenuItemType.Choice:
-                    case MenuItemType.ChoiceBool:
-                    case MenuItemType.Button:
-                        if (selectedItem.Values != null && selectedItem.Values.Count > 0)
-                        {
-                            if (selectedItem.Pinwheel)
-                            {
-                                selectedItem.Option = CheckButton(buttons, _config.GetLeftButton())
-                                    ? (selectedItem.Option - 1 + selectedItem.Values.Count) % selectedItem.Values.Count
-                                    : (selectedItem.Option + 1) % selectedItem.Values.Count;
-                            }
-                            else
-                            {
-                                selectedItem.Option = CheckButton(buttons, _config.GetLeftButton())
-                                    ? Math.Max(0, selectedItem.Option - 1)
-                                    : Math.Min(selectedItem.Values.Count - 1, selectedItem.Option + 1);
-                            }
-                        }
-                        break;
-
-                    case MenuItemType.Slider:
-                        if (selectedItem.Data.Length > 0)
-                        {
-                            selectedItem.Data[0] = CheckButton(buttons, _config.GetLeftButton())
-                                ? Math.Max(0, selectedItem.Data[0] - 1)
-                                : Math.Min(10, selectedItem.Data[0] + 1);
-                        }
-                        break;
-                }
-                menu.Callback?.Invoke(CheckButton(buttons, _config.GetLeftButton()) ? _config.GetLeftButton() : _config.GetRightButton(), menu, selectedItem);
                 return true;
             }
 
@@ -707,8 +674,8 @@ namespace Menu
 
                 menu.AddItem(new MenuItem(MenuItemType.Spacer));
 
-                if (!isSubmenu && !disableDeveloper)
-                    menu.AddItem(new MenuItem(MenuItemType.Text, new MenuValue($"Developed by <font color=\"#ffc0cb\">zhw1nq</font>") { Prefix = "<font color=\"#FFFFFF\" class=\"fontSize-s\">", Suffix = "</font>" }));
+                // if (!isSubmenu && !disableDeveloper)
+                menu.AddItem(new MenuItem(MenuItemType.Text, new MenuValue($"Developed by <font color=\"#ffc0cb\">zhw1nq</font>") { Prefix = "<font color=\"#FFFFFF\" class=\"fontSize-s\">", Suffix = "</font>" }));
 
                 menu.AddItem(new MenuItem(MenuItemType.Text, new MenuValue(isSubmenu ? Translator.GetTranslation("FooterSubMenu") : Translator.GetTranslation("FooterMain")) { Prefix = "<font color=\"#ff3333\" class=\"fontSize-s\">", Suffix = "<font color=\"#FFFFFF\">" }));
 
@@ -728,7 +695,6 @@ namespace Menu
 
             CreateMenu();
         }
-
         private static MenuButtons GetCurrentButtons(CCSPlayerController controller)
         {
             var currentButtons = (MenuButtons)controller.Buttons;
