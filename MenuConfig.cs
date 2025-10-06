@@ -44,8 +44,8 @@ namespace Menu
 		public string Back { get; set; } = "Speed";
 		public string Up { get; set; } = "Forward";
 		public string Down { get; set; } = "Back";
-		// public string Left { get; set; } = "Moveleft";
-		// public string Right { get; set; } = "Moveright";
+		public string Left { get; set; } = "Moveleft";
+		public string Right { get; set; } = "Moveright";
 		public string Exit { get; set; } = "Scoreboard";
 
 		// Sound paths in config
@@ -60,8 +60,8 @@ namespace Menu
 		private ulong _backButton;
 		private ulong _upButton;
 		private ulong _downButton;
-		// private ulong _leftButton;
-		// private ulong _rightButton;
+		private ulong _leftButton;
+		private ulong _rightButton;
 		private ulong _exitButton;
 
 		public MenuConfiguration() { }
@@ -98,8 +98,8 @@ namespace Menu
 					Back = config.Back;
 					Up = config.Up;
 					Down = config.Down;
-					// Left = config.Left;
-					// Right = config.Right;
+					Left = config.Left;
+					Right = config.Right;
 					Exit = config.Exit;
 
 					// Load sound configurations
@@ -123,8 +123,8 @@ namespace Menu
 			_backButton = ParseButtonByName(Back);
 			_upButton = ParseButtonByName(Up);
 			_downButton = ParseButtonByName(Down);
-			// _leftButton = ParseButtonByName(Left);
-			// _rightButton = ParseButtonByName(Right);
+			_leftButton = ParseButtonByName(Left);
+			_rightButton = ParseButtonByName(Right);
 			_exitButton = ParseButtonByName(Exit);
 		}
 
@@ -236,8 +236,8 @@ namespace Menu
 		public MenuButtons GetBackButton() => (MenuButtons)_backButton;
 		public MenuButtons GetUpButton() => (MenuButtons)_upButton;
 		public MenuButtons GetDownButton() => (MenuButtons)_downButton;
-		// public MenuButtons GetLeftButton() => (MenuButtons)_leftButton;
-		// public MenuButtons GetRightButton() => (MenuButtons)_rightButton;
+		public MenuButtons GetLeftButton() => (MenuButtons)_leftButton;
+		public MenuButtons GetRightButton() => (MenuButtons)_rightButton;
 		public MenuButtons GetExitButton() => (MenuButtons)_exitButton;
 		public MenuButtons GetInputButton() => (MenuButtons)BUTTON_INPUT;
 
@@ -258,10 +258,10 @@ namespace Menu
 				return MenuButtons.Up;
 			if ((ulong)button == _downButton)
 				return MenuButtons.Down;
-			// if ((ulong)button == _leftButton)
-				// return MenuButtons.Left;
-			// if ((ulong)button == _rightButton)
-				// return MenuButtons.Right;
+			if ((ulong)button == _leftButton)
+				return MenuButtons.Left;
+			if ((ulong)button == _rightButton)
+				return MenuButtons.Right;
 			if ((ulong)button == _exitButton)
 				return MenuButtons.Exit;
 			if ((ulong)button == BUTTON_INPUT)
