@@ -524,7 +524,7 @@ namespace Menu
             }, isSubmenu, freezePlayer);
         }
 
-        public void ShowScrollableMenu(CCSPlayerController controller, string title, List<MenuItem> items, Action<MenuButtons, MenuBase, MenuItem?>? callback, bool isSubmenu = false, bool freezePlayer = false, int visibleItems = 5, Dictionary<int, object>? defaultValues = null, bool disableDeveloper = false)
+        public void ShowScrollableMenu(CCSPlayerController controller, string title, List<MenuItem> items, Action<MenuButtons, MenuBase, MenuItem?>? callback, bool isSubmenu = false, bool freezePlayer = false, int visibleItems = 5, bool closeOnSelect = false, Dictionary<int, object>? defaultValues = null, bool disableDeveloper = false)
         {
             MenuBase menu = null!;
             List<MenuItem> allItems = [.. items];
@@ -604,6 +604,19 @@ namespace Menu
                             }
 
                             menu.Option = preservedIndex;
+
+                            if (closeOnSelect && button == _config.GetSelectButton())
+                            {
+                                ObserverMode.TryRemove(controller, out _);
+                                Menus.TryRemove(controller, out _);
+
+                                if (controller.IsValid)
+                                {
+                                    controller.PrintToCenterHtml(" ");
+                                }
+
+                                InitiatePlayerFreeze(controller, false);
+                            }
                         }
                     }
                     else
@@ -707,8 +720,7 @@ namespace Menu
 
                 menu.AddItem(new MenuItem(MenuItemType.Spacer));
 
-                if (!isSubmenu && !disableDeveloper)
-                    menu.AddItem(new MenuItem(MenuItemType.Text, new MenuValue($"Developed by <font color=\"#ffc0cb\">zhw1nq</font>") { Prefix = "<font color=\"#FFFFFF\" class=\"fontSize-s\">", Suffix = "</font>" }));
+                menu.AddItem(new MenuItem(MenuItemType.Text, new MenuValue($"Developed by <font color=\"#ffc0cb\">zhw1nq</font>") { Prefix = "<font color=\"#FFFFFF\" class=\"fontSize-s\">", Suffix = "</font>" }));
 
                 menu.AddItem(new MenuItem(MenuItemType.Text, new MenuValue(isSubmenu ? Translator.GetTranslation("FooterSubMenu") : Translator.GetTranslation("FooterMain")) { Prefix = "<font color=\"#ff3333\" class=\"fontSize-s\">", Suffix = "<font color=\"#FFFFFF\">" }));
 
